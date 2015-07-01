@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 27, 2015 at 03:07 PM
+-- Generation Time: Jul 01, 2015 at 09:45 AM
 -- Server version: 5.5.43-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.9
 
@@ -26,11 +26,14 @@ SET time_zone = "+00:00";
 -- Table structure for table `companies`
 --
 
+DROP TABLE IF EXISTS `companies`;
 CREATE TABLE IF NOT EXISTS `companies` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` text NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `title` text NOT NULL,
   `description` longtext NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -39,24 +42,20 @@ CREATE TABLE IF NOT EXISTS `companies` (
 -- Table structure for table `games`
 --
 
+DROP TABLE IF EXISTS `games`;
 CREATE TABLE IF NOT EXISTS `games` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
   `title` longtext NOT NULL,
   `description` longtext NOT NULL,
   `publisher_id` bigint(20) DEFAULT NULL,
   `developer_id` bigint(20) DEFAULT NULL,
   `port` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
   KEY `publisher_id` (`publisher_id`),
   KEY `developer_id` (`developer_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
-
---
--- Dumping data for table `games`
---
-
-INSERT INTO `games` (`id`, `title`, `description`, `publisher_id`, `developer_id`, `port`) VALUES
-(1, 'TEST', '', NULL, NULL, 0);
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 -- --------------------------------------------------------
 
@@ -64,6 +63,7 @@ INSERT INTO `games` (`id`, `title`, `description`, `publisher_id`, `developer_id
 -- Table structure for table `game_links`
 --
 
+DROP TABLE IF EXISTS `game_links`;
 CREATE TABLE IF NOT EXISTS `game_links` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `game_id` bigint(20) NOT NULL,
@@ -80,6 +80,7 @@ CREATE TABLE IF NOT EXISTS `game_links` (
 -- Table structure for table `game_link_types`
 --
 
+DROP TABLE IF EXISTS `game_link_types`;
 CREATE TABLE IF NOT EXISTS `game_link_types` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `title` text NOT NULL,
@@ -91,9 +92,23 @@ CREATE TABLE IF NOT EXISTS `game_link_types` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `game_platforms`
+--
+
+DROP TABLE IF EXISTS `game_platforms`;
+CREATE TABLE IF NOT EXISTS `game_platforms` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `news`
 --
 
+DROP TABLE IF EXISTS `news`;
 CREATE TABLE IF NOT EXISTS `news` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `title` text NOT NULL,
@@ -108,9 +123,28 @@ CREATE TABLE IF NOT EXISTS `news` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `platforms`
+--
+
+DROP TABLE IF EXISTS `platforms`;
+CREATE TABLE IF NOT EXISTS `platforms` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `title` text NOT NULL,
+  `description` longtext NOT NULL,
+  `gb_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
+  UNIQUE KEY `gb_id` (`gb_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `rating_categories`
 --
 
+DROP TABLE IF EXISTS `rating_categories`;
 CREATE TABLE IF NOT EXISTS `rating_categories` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` text NOT NULL,
@@ -126,6 +160,7 @@ CREATE TABLE IF NOT EXISTS `rating_categories` (
 -- Table structure for table `rating_category_options`
 --
 
+DROP TABLE IF EXISTS `rating_category_options`;
 CREATE TABLE IF NOT EXISTS `rating_category_options` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `rating_category_id` bigint(20) NOT NULL,
@@ -141,6 +176,7 @@ CREATE TABLE IF NOT EXISTS `rating_category_options` (
 -- Table structure for table `rating_category_values`
 --
 
+DROP TABLE IF EXISTS `rating_category_values`;
 CREATE TABLE IF NOT EXISTS `rating_category_values` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `rating_header_id` bigint(20) NOT NULL,
@@ -159,10 +195,12 @@ CREATE TABLE IF NOT EXISTS `rating_category_values` (
 -- Table structure for table `rating_headers`
 --
 
+DROP TABLE IF EXISTS `rating_headers`;
 CREATE TABLE IF NOT EXISTS `rating_headers` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `game_id` bigint(20) NOT NULL,
   `user_id` bigint(20) NOT NULL,
+  `game_platform_id` bigint(20) NOT NULL,
   `rig_id` bigint(20) NOT NULL,
   `datetime` datetime NOT NULL,
   `upvotes` bigint(20) NOT NULL,
@@ -170,7 +208,8 @@ CREATE TABLE IF NOT EXISTS `rating_headers` (
   PRIMARY KEY (`id`),
   KEY `game_id` (`game_id`),
   KEY `user_id` (`user_id`),
-  KEY `rig_id` (`rig_id`)
+  KEY `rig_id` (`rig_id`),
+  KEY `game_platform_id` (`game_platform_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -179,10 +218,11 @@ CREATE TABLE IF NOT EXISTS `rating_headers` (
 -- Table structure for table `rigs`
 --
 
+DROP TABLE IF EXISTS `rigs`;
 CREATE TABLE IF NOT EXISTS `rigs` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) NOT NULL,
-  `name` text NOT NULL,
+  `title` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -193,6 +233,7 @@ CREATE TABLE IF NOT EXISTS `rigs` (
 -- Table structure for table `rig_attributes`
 --
 
+DROP TABLE IF EXISTS `rig_attributes`;
 CREATE TABLE IF NOT EXISTS `rig_attributes` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` bigint(20) NOT NULL,
@@ -205,6 +246,7 @@ CREATE TABLE IF NOT EXISTS `rig_attributes` (
 -- Table structure for table `rig_attribute_values`
 --
 
+DROP TABLE IF EXISTS `rig_attribute_values`;
 CREATE TABLE IF NOT EXISTS `rig_attribute_values` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `rig_id` bigint(20) NOT NULL,
@@ -221,12 +263,15 @@ CREATE TABLE IF NOT EXISTS `rig_attribute_values` (
 -- Table structure for table `user`
 --
 
+DROP TABLE IF EXISTS `user`;
 CREATE TABLE IF NOT EXISTS `user` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `username` text NOT NULL,
   `password` text NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `reddit_id` varchar(32) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `reddit_id` (`reddit_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 -- --------------------------------------------------------
 
@@ -234,6 +279,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Table structure for table `user_attributes`
 --
 
+DROP TABLE IF EXISTS `user_attributes`;
 CREATE TABLE IF NOT EXISTS `user_attributes` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` text NOT NULL,
@@ -246,6 +292,7 @@ CREATE TABLE IF NOT EXISTS `user_attributes` (
 -- Table structure for table `user_attribute_values`
 --
 
+DROP TABLE IF EXISTS `user_attribute_values`;
 CREATE TABLE IF NOT EXISTS `user_attribute_values` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `user_attribute_id` bigint(20) NOT NULL,
@@ -262,6 +309,7 @@ CREATE TABLE IF NOT EXISTS `user_attribute_values` (
 -- Table structure for table `user_weights`
 --
 
+DROP TABLE IF EXISTS `user_weights`;
 CREATE TABLE IF NOT EXISTS `user_weights` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `rating_category_id` bigint(20) NOT NULL,
@@ -280,8 +328,8 @@ CREATE TABLE IF NOT EXISTS `user_weights` (
 -- Constraints for table `games`
 --
 ALTER TABLE `games`
-  ADD CONSTRAINT `games_ibfk_2` FOREIGN KEY (`developer_id`) REFERENCES `companies` (`id`),
-  ADD CONSTRAINT `games_ibfk_1` FOREIGN KEY (`publisher_id`) REFERENCES `companies` (`id`);
+  ADD CONSTRAINT `games_ibfk_1` FOREIGN KEY (`publisher_id`) REFERENCES `companies` (`id`),
+  ADD CONSTRAINT `games_ibfk_2` FOREIGN KEY (`developer_id`) REFERENCES `companies` (`id`);
 
 --
 -- Constraints for table `game_links`
@@ -313,6 +361,7 @@ ALTER TABLE `rating_category_values`
 -- Constraints for table `rating_headers`
 --
 ALTER TABLE `rating_headers`
+  ADD CONSTRAINT `rating_headers_ibfk_4` FOREIGN KEY (`game_platform_id`) REFERENCES `game_platforms` (`id`),
   ADD CONSTRAINT `rating_headers_ibfk_1` FOREIGN KEY (`game_id`) REFERENCES `games` (`id`),
   ADD CONSTRAINT `rating_headers_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
   ADD CONSTRAINT `rating_headers_ibfk_3` FOREIGN KEY (`rig_id`) REFERENCES `rigs` (`id`);
