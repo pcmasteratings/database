@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jul 06, 2015 at 03:06 PM
+-- Generation Time: Jul 09, 2015 at 01:47 PM
 -- Server version: 5.5.43-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.9
 
@@ -61,29 +61,27 @@ CREATE TABLE IF NOT EXISTS `games` (
   UNIQUE KEY `bg_id` (`gb_id`),
   KEY `publisher_id` (`publisher_id`),
   KEY `developer_id` (`developer_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=80 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=90 ;
 
 --
 -- Dumping data for table `games`
 --
 
 INSERT INTO `games` (`id`, `name`, `title`, `description`, `publisher_id`, `developer_id`, `gb_id`, `gb_url`, `gb_image`, `gb_thumb`) VALUES
-(79, 'deus_ex', 'Deus Ex', '', NULL, NULL, 0, '', 'http://static.giantbomb.com/uploads/scale_medium/0/5480/608405-dxcover_1.jpg', 'http://static.giantbomb.com/uploads/screen_medium/0/5480/608405-dxcover_1.jpg');
+(85, 'deus_ex_invisible_war_2003', 'Deus Ex: Invisible War', 'The sequel to one of the most acclaimed PC games of all time, Deus Ex: Invisible War throws you into a divided world, where multiple factions wish to take advantage of your cybernetic abilities. Playing as Alex D., you make your own path through corrupt leaders and worldwide conspiracies.', NULL, NULL, 9883, 'http://www.giantbomb.com/api/game/3030-9883/', 'http://static.giantbomb.com/uploads/scale_medium/1/15693/622641-528588_50970_front_1_.jpg', 'http://static.giantbomb.com/uploads/screen_medium/1/15693/622641-528588_50970_front_1_.jpg'),
+(86, 'deus_ex_2000', 'Deus Ex', 'A celebrated cyberpunk-themed first-person role-playing game, Deus Ex puts players behind the shades of JC Denton--an operative thrust into a world of byzantine global conspiracies.', NULL, NULL, 17533, 'http://www.giantbomb.com/api/game/3030-17533/', 'http://static.giantbomb.com/uploads/scale_medium/0/5480/608405-dxcover_1.jpg', 'http://static.giantbomb.com/uploads/screen_medium/0/5480/608405-dxcover_1.jpg'),
+(87, 'deus_ex_human_revolution_2011', 'Deus Ex: Human Revolution', 'Human Revolution is the third game in the Deus Ex series, a prequel where players take control of augmented security officer Adam Jensen, and investigate attacks against Sarif Industries, a leader in augmentation technology.', NULL, NULL, 21358, 'http://www.giantbomb.com/api/game/3030-21358/', 'http://static.giantbomb.com/uploads/scale_medium/8/87790/1974385-box_deusexhr.png', 'http://static.giantbomb.com/uploads/screen_medium/8/87790/1974385-box_deusexhr.png'),
+(88, 'deus_ex_human_revolution_directors_cut_2013', 'Deus Ex: Human Revolution Director''s Cut', 'The Director''s Cut of Deus Ex: Human Revolution features redone boss battles, improved graphics, A.I. and combat, and all DLC released for the original game. The Wii U version makes use of the controller''s screen to allow new features like map notes.', NULL, NULL, 42021, 'http://www.giantbomb.com/api/game/3030-42021/', 'http://static.giantbomb.com/uploads/scale_medium/8/82063/2464567-dehrdcclean.jpg', 'http://static.giantbomb.com/uploads/screen_medium/8/82063/2464567-dehrdcclean.jpg'),
+(89, 'deus_ex_the_fall_2013', 'Deus Ex: The Fall', 'The fourth Deus Ex game, revealed a week before E3 2013 to be an iOS game that aims to recreate a true Deus Ex game on mobile devices and is built from the ground up for them.', NULL, NULL, 42841, 'http://www.giantbomb.com/api/game/3030-42841/', 'http://static.giantbomb.com/uploads/scale_medium/8/82063/2491944-deusexthefalllogo.jpg', 'http://static.giantbomb.com/uploads/screen_medium/8/82063/2491944-deusexthefalllogo.jpg');
 
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `game_category_ratings`
+-- Table structure for table `game_category_ratings`
 --
-DROP VIEW IF EXISTS `game_category_ratings`;
-CREATE TABLE IF NOT EXISTS `game_category_ratings` (
-`id` bigint(20)
-,`name` varchar(255)
-,`platform` varchar(255)
-,`rating_category_id` bigint(20)
-,`rating` decimal(11,0)
-,`rating_description` longtext
-);
+-- in use(#1356 - View 'pcmratings.game_category_ratings' references invalid table(s) or column(s) or function(s) or definer/invoker of view lack rights to use them)
+-- Error reading data: (#1356 - View 'pcmratings.game_category_ratings' references invalid table(s) or column(s) or function(s) or definer/invoker of view lack rights to use them)
+
 -- --------------------------------------------------------
 
 --
@@ -124,39 +122,28 @@ CREATE TABLE IF NOT EXISTS `game_link_types` (
 
 DROP TABLE IF EXISTS `game_platforms`;
 CREATE TABLE IF NOT EXISTS `game_platforms` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `title` text NOT NULL,
-  `description` mediumtext NOT NULL,
-  `gb_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `gb_id` (`gb_id`),
-  UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+  `game_id` bigint(20) NOT NULL,
+  `platform_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`game_id`,`platform_id`),
+  KEY `platform_id` (`platform_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `game_platforms`
 --
 
-INSERT INTO `game_platforms` (`id`, `name`, `title`, `description`, `gb_id`) VALUES
-(3, 'windows', 'Windows', 'Windows', 1),
-(4, 'linux', 'Linux', 'Linux', 2),
-(5, 'mac', 'Mac', 'Mac', 3);
+INSERT INTO `game_platforms` (`game_id`, `platform_id`) VALUES
+(86, 3),
+(86, 5);
 
 -- --------------------------------------------------------
 
 --
--- Stand-in structure for view `game_ratings`
+-- Table structure for table `game_ratings`
 --
-DROP VIEW IF EXISTS `game_ratings`;
-CREATE TABLE IF NOT EXISTS `game_ratings` (
-`id` bigint(20)
-,`name` varchar(255)
-,`platform` varchar(255)
-,`rating_count` bigint(21)
-,`score` decimal(14,4)
-,`rating` varchar(1)
-);
+-- in use(#1356 - View 'pcmratings.game_ratings' references invalid table(s) or column(s) or function(s) or definer/invoker of view lack rights to use them)
+-- Error reading data: (#1356 - View 'pcmratings.game_ratings' references invalid table(s) or column(s) or function(s) or definer/invoker of view lack rights to use them)
+
 -- --------------------------------------------------------
 
 --
@@ -178,6 +165,33 @@ CREATE TABLE IF NOT EXISTS `news` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `platforms`
+--
+
+DROP TABLE IF EXISTS `platforms`;
+CREATE TABLE IF NOT EXISTS `platforms` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `title` text NOT NULL,
+  `description` mediumtext NOT NULL,
+  `gb_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `gb_id` (`gb_id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `platforms`
+--
+
+INSERT INTO `platforms` (`id`, `name`, `title`, `description`, `gb_id`) VALUES
+(3, 'windows', 'Windows', 'Windows', 94),
+(4, 'linux', 'Linux', 'Linux', 152),
+(5, 'mac', 'Mac', 'Mac', 17);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `ratings`
 --
 
@@ -190,7 +204,7 @@ CREATE TABLE IF NOT EXISTS `ratings` (
   `threshold` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `initial` (`initial`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `ratings`
@@ -201,7 +215,8 @@ INSERT INTO `ratings` (`id`, `initial`, `title`, `description`, `threshold`) VAL
 (2, 'c', 'Compromised', 'Compromised', 40),
 (3, 'm', 'Mediocre', 'Mediocre', 60),
 (4, 'r', 'Righteous', 'Righteous', 80),
-(5, 'g', 'Glorious', 'Glorious', 100);
+(5, 'g', 'Glorious', 'Glorious', 100),
+(6, 'n', 'N/A', 'N/A', -1);
 
 -- --------------------------------------------------------
 
@@ -320,58 +335,22 @@ CREATE TABLE IF NOT EXISTS `rating_category_values` (
   KEY `ratings_header_id` (`rating_header_id`),
   KEY `rating_category_id` (`rating_category_id`),
   KEY `rating_category_option_id` (`rating_category_option_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=49 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=67 ;
 
 --
 -- Dumping data for table `rating_category_values`
 --
 
 INSERT INTO `rating_category_values` (`id`, `rating_header_id`, `rating_category_id`, `rating_category_option_id`, `original_value`, `original_weighted_value`, `comments`) VALUES
-(1, 4, 1, 1, 0, 0, ''),
-(2, 4, 2, 6, 0, 0, ''),
-(3, 4, 3, 11, 0, 0, ''),
-(4, 4, 4, 16, 0, 0, ''),
-(5, 4, 5, 21, 0, 0, ''),
-(6, 4, 6, 26, 0, 0, ''),
-(7, 4, 7, 31, 0, 0, ''),
-(8, 4, 8, 36, 0, 0, ''),
-(9, 4, 9, 41, 0, 0, ''),
-(10, 5, 1, 5, 4, 16, ''),
-(11, 5, 2, 10, 4, 12, ''),
-(12, 5, 3, 15, 4, 12, ''),
-(13, 5, 4, 20, 4, 20, ''),
-(14, 5, 5, 25, 4, 28, ''),
-(15, 5, 6, 30, 4, 24, ''),
-(16, 5, 7, 35, 4, 28, ''),
-(17, 5, 8, 40, 4, 20, ''),
-(18, 5, 9, 45, 4, 20, ''),
-(22, 7, 1, 2, 1, 4, ''),
-(23, 7, 2, 8, 2, 6, ''),
-(24, 7, 3, 12, 1, 3, ''),
-(25, 7, 4, 19, 3, 15, ''),
-(26, 7, 5, 23, 2, 14, ''),
-(27, 7, 6, 30, 4, 24, ''),
-(28, 7, 7, 32, 1, 7, ''),
-(29, 7, 8, 38, 2, 10, ''),
-(30, 7, 9, 42, 1, 5, ''),
-(31, 8, 1, 2, 1, 4, ''),
-(32, 8, 2, 8, 2, 6, ''),
-(33, 8, 3, 14, 3, 9, ''),
-(34, 8, 4, 20, 4, 20, ''),
-(35, 8, 5, 24, 3, 21, ''),
-(36, 8, 6, 28, 2, 12, ''),
-(37, 8, 7, 32, 1, 7, ''),
-(38, 8, 8, 36, 0, 0, ''),
-(39, 8, 9, 42, 1, 5, ''),
-(40, 9, 1, 2, 1, 4, ''),
-(41, 9, 2, 8, 2, 6, ''),
-(42, 9, 3, 12, 1, 3, ''),
-(43, 9, 4, 20, 4, 20, ''),
-(44, 9, 5, 23, 2, 14, ''),
-(45, 9, 6, 30, 4, 24, ''),
-(46, 9, 7, 32, 1, 7, ''),
-(47, 9, 8, 38, 2, 10, ''),
-(48, 9, 9, 42, 1, 5, '');
+(58, 10, 1, 4, 3, 12, ''),
+(59, 10, 2, 8, 2, 6, ''),
+(60, 10, 3, 12, 1, 3, ''),
+(61, 10, 4, 16, 0, 0, ''),
+(62, 10, 5, 25, 4, 28, ''),
+(63, 10, 6, 29, 3, 18, ''),
+(64, 10, 7, 33, 2, 14, ''),
+(65, 10, 8, 37, 1, 5, ''),
+(66, 10, 9, 41, 0, 0, '');
 
 -- --------------------------------------------------------
 
@@ -387,27 +366,25 @@ CREATE TABLE IF NOT EXISTS `rating_headers` (
   `game_platform_id` bigint(20) NOT NULL,
   `rig_id` bigint(20) DEFAULT NULL,
   `created` datetime NOT NULL,
+  `updated` datetime NOT NULL,
   `upvotes` bigint(20) NOT NULL DEFAULT '0',
   `downvotes` bigint(20) NOT NULL DEFAULT '0',
   `comments` longtext NOT NULL,
   `score` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `game_id_2` (`game_id`,`game_platform_id`),
   KEY `game_id` (`game_id`),
   KEY `user_id` (`user_id`),
   KEY `rig_id` (`rig_id`),
   KEY `game_platform_id` (`game_platform_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
 
 --
 -- Dumping data for table `rating_headers`
 --
 
-INSERT INTO `rating_headers` (`id`, `game_id`, `user_id`, `game_platform_id`, `rig_id`, `created`, `upvotes`, `downvotes`, `comments`, `score`) VALUES
-(4, 79, 1, 4, NULL, '2015-07-03 16:02:49', 0, 0, '', 0),
-(5, 79, 1, 3, NULL, '2015-07-03 16:08:04', 0, 0, '', 180),
-(7, 79, 1, 5, NULL, '2015-07-03 18:59:34', 0, 0, '', 88),
-(8, 79, 1, 4, NULL, '2015-07-03 19:04:36', 0, 0, '', 84),
-(9, 79, 1, 5, NULL, '2015-07-03 19:04:59', 0, 0, '', 93);
+INSERT INTO `rating_headers` (`id`, `game_id`, `user_id`, `game_platform_id`, `rig_id`, `created`, `updated`, `upvotes`, `downvotes`, `comments`, `score`) VALUES
+(10, 86, 1, 3, NULL, '2015-07-09 13:10:39', '2015-07-09 13:15:39', 0, 0, '', 86);
 
 -- --------------------------------------------------------
 
@@ -471,7 +448,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `banned` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `reddit_id` (`reddit_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `user`
@@ -483,7 +460,8 @@ INSERT INTO `user` (`id`, `username`, `password`, `reddit_id`, `trusted`, `admin
 (3, 'lonmoer', '', '3h3mm', 0, 0, 0),
 (4, 'BallisticGE0RGE', '', '68p5g', 0, 0, 0),
 (5, 'NorthcodeCH', '', 'gdanv', 0, 0, 0),
-(6, 'macnetic', '', 'ep1zs', 0, 0, 0);
+(6, 'macnetic', '', 'ep1zs', 0, 0, 0),
+(7, 'nirkbirk', '', '700sv', 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -538,16 +516,14 @@ CREATE TABLE IF NOT EXISTS `user_reviews` (
   KEY `user_id` (`user_id`),
   KEY `rating` (`rating`),
   KEY `rig_id` (`rig_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `user_reviews`
 --
 
 INSERT INTO `user_reviews` (`id`, `game_id`, `platform_id`, `user_id`, `rig_id`, `rating`, `review`, `upvotes`, `downvotes`) VALUES
-(3, 79, 3, 1, 0, 5, 'Did you feel that? Look at me - I''m not out of breath anymore! You suck the oysters up and you always keep some on your face to let the oysters know that you''re proud of em. Its like a symbology of this of your mouth is eating food, from your mouth to your heart, is your freedom and your independence and your identity.		', 0, 0),
-(4, 79, 4, 1, 0, 1, 'All men are failed women at birth. You know when you get the outside genitalia, its like "Oh my god what have they done to me?". All men are failed women at birth. You know when you get the outside genitalia, its like "Oh my god what have they done to me?".		', 0, 0),
-(5, 79, 5, 1, 0, 1, 'Go with the feeling of the nature. Take it easy. Know why you''re here. And remeber to balance your internal energy with the environment. I would like to give you a backstage pass to my imagination. It depends on your ability to take a risk on eating something when you dont know what it is. Thats why I enjoy eating in the dark.		', 0, 0);
+(7, 86, 3, 1, 0, 3, 'REVISED REVIEW', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -566,24 +542,6 @@ CREATE TABLE IF NOT EXISTS `user_weights` (
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
--- --------------------------------------------------------
-
---
--- Structure for view `game_category_ratings`
---
-DROP TABLE IF EXISTS `game_category_ratings`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `game_category_ratings` AS select `g`.`id` AS `id`,`g`.`name` AS `name`,`gp`.`name` AS `platform`,`rcv`.`rating_category_id` AS `rating_category_id`,round(avg(`rcv`.`original_value`),0) AS `rating`,(select `rco`.`description` from `rating_category_options` `rco` where ((`rco`.`rating_category_id` = `rcv`.`rating_category_id`) and (`rco`.`value` <= round(avg(`rcv`.`original_value`),0))) order by `rco`.`value` desc limit 0,1) AS `rating_description` from (((`games` `g` left join `game_platforms` `gp` on((1 = 1))) left join `rating_headers` `rh` on(((`g`.`id` = `rh`.`game_id`) and (`rh`.`game_platform_id` = `gp`.`id`)))) join `rating_category_values` `rcv` on((`rcv`.`rating_header_id` = `rh`.`id`))) group by `g`.`id`,`g`.`name`,`rcv`.`rating_category_id`,`gp`.`name`;
-
--- --------------------------------------------------------
-
---
--- Structure for view `game_ratings`
---
-DROP TABLE IF EXISTS `game_ratings`;
-
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `game_ratings` AS select `g`.`id` AS `id`,`g`.`name` AS `name`,`gp`.`name` AS `platform`,count(`rh`.`id`) AS `rating_count`,avg(`rh`.`score`) AS `score`,(select `ratings`.`initial` from `ratings` where (`ratings`.`threshold` <= avg(`rh`.`score`)) order by `ratings`.`threshold` desc limit 0,1) AS `rating` from ((`games` `g` left join `rating_headers` `rh` on((`g`.`id` = `rh`.`game_id`))) left join `game_platforms` `gp` on((`gp`.`id` = `rh`.`game_platform_id`))) group by `g`.`id`,`gp`.`name`;
-
 --
 -- Constraints for dumped tables
 --
@@ -601,6 +559,13 @@ ALTER TABLE `games`
 ALTER TABLE `game_links`
   ADD CONSTRAINT `game_links_ibfk_1` FOREIGN KEY (`game_id`) REFERENCES `games` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `game_links_ibfk_2` FOREIGN KEY (`game_link_type_id`) REFERENCES `game_link_types` (`id`);
+
+--
+-- Constraints for table `game_platforms`
+--
+ALTER TABLE `game_platforms`
+  ADD CONSTRAINT `game_platforms_ibfk_2` FOREIGN KEY (`platform_id`) REFERENCES `platforms` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `game_platforms_ibfk_1` FOREIGN KEY (`game_id`) REFERENCES `games` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `news`
@@ -629,7 +594,7 @@ ALTER TABLE `rating_headers`
   ADD CONSTRAINT `rating_headers_ibfk_1` FOREIGN KEY (`game_id`) REFERENCES `games` (`id`),
   ADD CONSTRAINT `rating_headers_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
   ADD CONSTRAINT `rating_headers_ibfk_3` FOREIGN KEY (`rig_id`) REFERENCES `rigs` (`id`),
-  ADD CONSTRAINT `rating_headers_ibfk_4` FOREIGN KEY (`game_platform_id`) REFERENCES `game_platforms` (`id`);
+  ADD CONSTRAINT `rating_headers_ibfk_4` FOREIGN KEY (`game_platform_id`) REFERENCES `platforms` (`id`);
 
 --
 -- Constraints for table `rigs`
@@ -656,7 +621,7 @@ ALTER TABLE `user_attribute_values`
 --
 ALTER TABLE `user_reviews`
   ADD CONSTRAINT `user_reviews_ibfk_1` FOREIGN KEY (`game_id`) REFERENCES `games` (`id`),
-  ADD CONSTRAINT `user_reviews_ibfk_2` FOREIGN KEY (`platform_id`) REFERENCES `game_platforms` (`id`),
+  ADD CONSTRAINT `user_reviews_ibfk_2` FOREIGN KEY (`platform_id`) REFERENCES `platforms` (`id`),
   ADD CONSTRAINT `user_reviews_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
   ADD CONSTRAINT `user_reviews_ibfk_4` FOREIGN KEY (`rating`) REFERENCES `ratings` (`id`);
 
